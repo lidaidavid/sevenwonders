@@ -15,101 +15,18 @@ source("helpers.R")
 
 max_war = 16
 max_coin = 30
-max_sci = 6
+max_sci = 8
 
 ui <- page_navbar(
   title = "Seven Wonders: all packs",
   bg = "#2D89C8",
   inverse = TRUE,
-  nav_panel(title = "War", fluidPage(
-    
-    # Application title
-    titlePanel("War Results"),
-    
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(position = "right",
-      sidebarPanel(width = 8,
-        sliderInput("player",
-                    "how many players involved",
-                    min = 0,
-                    max = 7,
-                    value = 7),
-        
-        sliderInput("player1",
-                    "player 1 war point",
-                    min = 0,
-                    max = max_war,
-                    value = 0),
-        sliderInput("player2",
-                    "player 2 war point",
-                    min = 0,
-                    max = max_war,
-                    value = 0),
-        sliderInput("player3",
-                    "player 3 war point",
-                    min = 0,
-                    max = max_war,
-                    value = 0),
-        sliderInput("player4",
-                    "player 4 war point",
-                    min = 0,
-                    max = max_war,
-                    value = 0),
-        sliderInput("player5",
-                    "player 5 war point",
-                    min = 0,
-                    max = max_war,
-                    value = 0),
-        sliderInput("player6",
-                    "player 6 war point",
-                    min = 0,
-                    max = max_war,
-                    value = 0),
-        sliderInput("player7",
-                    "player 7 war point",
-                    min = 0,
-                    max = max_war,
-                    value = 0)
-      ),
-      
-      mainPanel(width = 4,
-        tableOutput("war") 
-      )
-    )
-  )
-
-            ),
-  nav_panel(title = "Coin Score", fluidPage(
-    
-    # Application title
-    titlePanel("Coin Score"),
-    
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(position = "right",
-      sidebarPanel(width=8,
-        sliderInput("coin",
-                    "how much coin",
-                    min = 0,
-                    max = max_coin,
-                    value = 10),
-       
-        sliderInput("debt",
-                    "how much debt",
-                    min = 0,
-                    max = max_coin,
-                    value = 0)
-      ),
-      
-      mainPanel(width=4,
-        tableOutput("coin") 
-      )
-    )
-  )),
+  
+  # science
   nav_panel(title = "Science Score", fluidPage(
     
     # Application title
     titlePanel("Science Score"),
-    
     # Sidebar with a slider input for number of bins 
     sidebarLayout(position = "right",
       sidebarPanel(width=8,
@@ -128,6 +45,11 @@ ui <- page_navbar(
                     min = 0,
                     max = max_sci,
                     value = 0),
+        sliderInput("AOE",
+                    "A or O or E",
+                    min = 0,
+                    max = max_sci,
+                    value = 0),
         sliderInput("AO",
                     "A or O",
                     min = 0,
@@ -143,16 +65,21 @@ ui <- page_navbar(
                     min = 0,
                     max = max_sci,
                     value = 0),
-        sliderInput("AOE",
-                    "A or O or E",
-                    min = 0,
-                    max = max_sci,
-                    value = 0),
-        sliderInput("plus",
-                    "plus one for the one you have the most",
-                    min = 0,
-                    max = max_sci,
-                    value = 0)
+
+        checkboxInput("cycle", "turn A or O or E into AOE"),
+        checkboxInput("plus", "plus one for the symbol you have the most")
+        
+        
+        # sliderInput("cycle",
+        #             "turn A or O or E into AOE",
+        #             min = 0,
+        #             max = 1,
+        #             value = 0),
+        # sliderInput("plus",
+        #             "plus one for the symbol you have the most",
+        #             min = 0,
+        #             max = 1,
+        #             value = 0)
       ),
       
       mainPanel(width=4,
@@ -160,6 +87,7 @@ ui <- page_navbar(
       )
     )
   )),
+  # total
   nav_panel(title = "Total Score", fluidPage(
     
     # Application title
@@ -172,132 +100,217 @@ ui <- page_navbar(
     page_fillable(layout_columns(
     # Sidebar with a slider input for number of bins 
       card(
-        textInput("name1", "Player 1 name", value="周"),
-        textInput("name2", "Player 2 name"),
-        textInput("name3", "Player 3 name"),
-        textInput("name4", "Player 4 name"),
-        textInput("name5", "Player 5 name"),
-        textInput("name6", "Player 6 name"),
-        textInput("name7", "Player 7 name")
+        textInput("name1", "P 1 name"),
+        textInput("name2", "P 2 name"),
+        textInput("name3", "P 3 name"),
+        textInput("name4", "P 4 name"),
+        textInput("name5", "P 5 name"),
+        textInput("name6", "P 6 name"),
+        textInput("name7", "P 7 name")
       ),
     
     card(
       style = "background-color: pink;",
-      numericInput("war1", "Player 1 war",value = ""),
-      numericInput("war2", "Player 2 war",value = ""),
-      numericInput("war3", "Player 3 war",value = ""),
-      numericInput("war4", "Player 4 war",value = ""),
-      numericInput("war5", "Player 5 war",value = ""),
-      numericInput("war6", "Player 6 war",value = ""),
-      numericInput("war7", "Player 7 war",value = "")
+      numericInput("war1", "P 1 war",value = ""),
+      numericInput("war2", "P 2 war",value = ""),
+      numericInput("war3", "P 3 war",value = ""),
+      numericInput("war4", "P 4 war",value = ""),
+      numericInput("war5", "P 5 war",value = ""),
+      numericInput("war6", "P 6 war",value = ""),
+      numericInput("war7", "P 7 war",value = "")
     ),
     card(
       style = "background-color: gold;",
-      numericInput("coin1", "Player 1 coin",value = ""),
-      numericInput("coin2", "Player 2 coin",value = ""),
-      numericInput("coin3", "Player 3 coin",value = ""),
-      numericInput("coin4", "Player 4 coin",value = ""),
-      numericInput("coin5", "Player 5 coin",value = ""),
-      numericInput("coin6", "Player 6 coin",value = ""),
-      numericInput("coin7", "Player 7 coin",value = "")
+      numericInput("coin1", "P 1 coin",value = ""),
+      numericInput("coin2", "P 2 coin",value = ""),
+      numericInput("coin3", "P 3 coin",value = ""),
+      numericInput("coin4", "P 4 coin",value = ""),
+      numericInput("coin5", "P 5 coin",value = ""),
+      numericInput("coin6", "P 6 coin",value = ""),
+      numericInput("coin7", "P 7 coin",value = "")
     ),
     card(
       style = "background-color: lightgrey;",
-      numericInput("wonder1", "Player 1 wonder",value = ""),
-      numericInput("wonder2", "Player 2 wonder",value = ""),
-      numericInput("wonder3", "Player 3 wonder",value = ""),
-      numericInput("wonder4", "Player 4 wonder",value = ""),
-      numericInput("wonder5", "Player 5 wonder",value = ""),
-      numericInput("wonder6", "Player 6 wonder",value = ""),
-      numericInput("wonder7", "Player 7 wonder",value = "")
+      numericInput("wonder1", "P 1 wonder",value = ""),
+      numericInput("wonder2", "P 2 wonder",value = ""),
+      numericInput("wonder3", "P 3 wonder",value = ""),
+      numericInput("wonder4", "P 4 wonder",value = ""),
+      numericInput("wonder5", "P 5 wonder",value = ""),
+      numericInput("wonder6", "P 6 wonder",value = ""),
+      numericInput("wonder7", "P 7 wonder",value = "")
     ),
     card(
       style = "background-color: lightblue;",
-      numericInput("blue1", "Player 1 blue",value = ""),
-      numericInput("blue2", "Player 2 blue",value = ""),
-      numericInput("blue3", "Player 3 blue",value = ""),
-      numericInput("blue4", "Player 4 blue",value = ""),
-      numericInput("blue5", "Player 5 blue",value = ""),
-      numericInput("blue6", "Player 6 blue",value = ""),
-      numericInput("blue7", "Player 7 blue",value = "")
+      numericInput("blue1", "P 1 blue",value = ""),
+      numericInput("blue2", "P 2 blue",value = ""),
+      numericInput("blue3", "P 3 blue",value = ""),
+      numericInput("blue4", "P 4 blue",value = ""),
+      numericInput("blue5", "P 5 blue",value = ""),
+      numericInput("blue6", "P 6 blue",value = ""),
+      numericInput("blue7", "P 7 blue",value = "")
     ),
     card(
       style = "background-color: lightgreen;",
-      numericInput("green1", "Player 1 green",value = ""),
-      numericInput("green2", "Player 2 green",value = ""),
-      numericInput("green3", "Player 3 green",value = ""),
-      numericInput("green4", "Player 4 green",value = ""),
-      numericInput("green5", "Player 5 green",value = ""),
-      numericInput("green6", "Player 6 green",value = ""),
-      numericInput("green7", "Player 7 green",value = "")
+      numericInput("green1", "P 1 green",value = ""),
+      numericInput("green2", "P 2 green",value = ""),
+      numericInput("green3", "P 3 green",value = ""),
+      numericInput("green4", "P 4 green",value = ""),
+      numericInput("green5", "P 5 green",value = ""),
+      numericInput("green6", "P 6 green",value = ""),
+      numericInput("green7", "P 7 green",value = "")
     ),
     card(
       style = "background-color: lightyellow;",
-      numericInput("yellow1", "Player 1 yellow",value = ""),
-      numericInput("yellow2", "Player 2 yellow",value = ""),
-      numericInput("yellow3", "Player 3 yellow",value = ""),
-      numericInput("yellow4", "Player 4 yellow",value = ""),
-      numericInput("yellow5", "Player 5 yellow",value = ""),
-      numericInput("yellow6", "Player 6 yellow",value = ""),
-      numericInput("yellow7", "Player 7 yellow",value = "")
+      numericInput("yellow1", "P 1 yellow",value = ""),
+      numericInput("yellow2", "P 2 yellow",value = ""),
+      numericInput("yellow3", "P 3 yellow",value = ""),
+      numericInput("yellow4", "P 4 yellow",value = ""),
+      numericInput("yellow5", "P 5 yellow",value = ""),
+      numericInput("yellow6", "P 6 yellow",value = ""),
+      numericInput("yellow7", "P 7 yellow",value = "")
     ),    
     card(
       style = "background-color: plum;",
-      numericInput("purple1", "Player 1 purple",value = ""),
-      numericInput("purple2", "Player 2 purple",value = ""),
-      numericInput("purple3", "Player 3 purple",value = ""),
-      numericInput("purple4", "Player 4 purple",value = ""),
-      numericInput("purple5", "Player 5 purple",value = ""),
-      numericInput("purple6", "Player 6 purple",value = ""),
-      numericInput("purple7", "Player 7 purple",value = "")
+      numericInput("purple1", "P 1 purple",value = ""),
+      numericInput("purple2", "P 2 purple",value = ""),
+      numericInput("purple3", "P 3 purple",value = ""),
+      numericInput("purple4", "P 4 purple",value = ""),
+      numericInput("purple5", "P 5 purple",value = ""),
+      numericInput("purple6", "P 6 purple",value = ""),
+      numericInput("purple7", "P 7 purple",value = "")
     ),    
     card(
       style = "background-color: darkgrey;",
-      numericInput("black1", "Player 1 black",value = ""),
-      numericInput("black2", "Player 2 black",value = ""),
-      numericInput("black3", "Player 3 black",value = ""),
-      numericInput("black4", "Player 4 black",value = ""),
-      numericInput("black5", "Player 5 black",value = ""),
-      numericInput("black6", "Player 6 black",value = ""),
-      numericInput("black7", "Player 7 black",value = "")
+      numericInput("black1", "P 1 black",value = ""),
+      numericInput("black2", "P 2 black",value = ""),
+      numericInput("black3", "P 3 black",value = ""),
+      numericInput("black4", "P 4 black",value = ""),
+      numericInput("black5", "P 5 black",value = ""),
+      numericInput("black6", "P 6 black",value = ""),
+      numericInput("black7", "P 7 black",value = "")
     ),
     card(
-      numericInput("white1", "Player 1 white",value = ""),
-      numericInput("white2", "Player 2 white",value = ""),
-      numericInput("white3", "Player 3 white",value = ""),
-      numericInput("white4", "Player 4 white",value = ""),
-      numericInput("white5", "Player 5 white",value = ""),
-      numericInput("white6", "Player 6 white",value = ""),
-      numericInput("white7", "Player 7 white",value = "")
+      numericInput("white1", "P 1 white",value = ""),
+      numericInput("white2", "P 2 white",value = ""),
+      numericInput("white3", "P 3 white",value = ""),
+      numericInput("white4", "P 4 white",value = ""),
+      numericInput("white5", "P 5 white",value = ""),
+      numericInput("white6", "P 6 white",value = ""),
+      numericInput("white7", "P 7 white",value = "")
     ),
     card(
       style = "background-color: cyan;",
-      numericInput("ship1", "Player 1 ship",value = ""),
-      numericInput("ship2", "Player 2 ship",value = ""),
-      numericInput("ship3", "Player 3 ship",value = ""),
-      numericInput("ship4", "Player 4 ship",value = ""),
-      numericInput("ship5", "Player 5 ship",value = ""),
-      numericInput("ship6", "Player 6 ship",value = ""),
-      numericInput("ship7", "Player 7 ship",value = "")
+      numericInput("ship1", "P 1 ship",value = ""),
+      numericInput("ship2", "P 2 ship",value = ""),
+      numericInput("ship3", "P 3 ship",value = ""),
+      numericInput("ship4", "P 4 ship",value = ""),
+      numericInput("ship5", "P 5 ship",value = ""),
+      numericInput("ship6", "P 6 ship",value = ""),
+      numericInput("ship7", "P 7 ship",value = "")
     ),
     card(
       style = "background-color: steelblue;",
-      numericInput("island1", "Player 1 island",value = ""),
-      numericInput("island2", "Player 2 island",value = ""),
-      numericInput("island3", "Player 3 island",value = ""),
-      numericInput("island4", "Player 4 island",value = ""),
-      numericInput("island5", "Player 5 island",value = ""),
-      numericInput("island6", "Player 6 island",value = ""),
-      numericInput("island7", "Player 7 island",value = "")
+      numericInput("island1", "P 1 island",value = ""),
+      numericInput("island2", "P 2 island",value = ""),
+      numericInput("island3", "P 3 island",value = ""),
+      numericInput("island4", "P 4 island",value = ""),
+      numericInput("island5", "P 5 island",value = ""),
+      numericInput("island6", "P 6 island",value = ""),
+      numericInput("island7", "P 7 island",value = "")
     ))),
     card(
         tableOutput("total") 
-      )
+      ),
+    nav_spacer()
     
   )),
-  nav_spacer()
+# war
+nav_panel(title = "War", fluidPage(
+  
+  # Application title
+  titlePanel("War Results"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(position = "right",
+                sidebarPanel(width = 8,
+                             sliderInput("player",
+                                         "how many players involved",
+                                         min = 0,
+                                         max = 7,
+                                         value = 7),
+                             
+                             sliderInput("player1",
+                                         "player 1 war point",
+                                         min = 0,
+                                         max = max_war,
+                                         value = 0),
+                             sliderInput("player2",
+                                         "player 2 war point",
+                                         min = 0,
+                                         max = max_war,
+                                         value = 0),
+                             sliderInput("player3",
+                                         "player 3 war point",
+                                         min = 0,
+                                         max = max_war,
+                                         value = 0),
+                             sliderInput("player4",
+                                         "player 4 war point",
+                                         min = 0,
+                                         max = max_war,
+                                         value = 0),
+                             sliderInput("player5",
+                                         "player 5 war point",
+                                         min = 0,
+                                         max = max_war,
+                                         value = 0),
+                             sliderInput("player6",
+                                         "player 6 war point",
+                                         min = 0,
+                                         max = max_war,
+                                         value = 0),
+                             sliderInput("player7",
+                                         "player 7 war point",
+                                         min = 0,
+                                         max = max_war,
+                                         value = 0)
+                ),
+                
+                mainPanel(width = 4,
+                          tableOutput("war") 
+                )
   )
+)
 
+),
+# coin
+nav_panel(title = "Coin Score", fluidPage(
+  
+  # Application title
+  titlePanel("Coin Score"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(position = "right",
+                sidebarPanel(width=8,
+                             sliderInput("coin",
+                                         "how much coin",
+                                         min = 0,
+                                         max = max_coin,
+                                         value = 10),
+                             
+                             sliderInput("debt",
+                                         "how much debt",
+                                         min = 0,
+                                         max = 10,
+                                         value = 0)
+                ),
+                
+                mainPanel(width=4,
+                          tableOutput("coin") 
+                )
+  )
+)),
+)
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {

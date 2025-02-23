@@ -5,7 +5,7 @@ account: lidaidavid
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 13954175
-bundleId: 9781104
+bundleId: 9843099
 url: https://lidaidavid.shinyapps.io/seven_wonders_sci/
 version: 1
 asMultiple: FALSE
