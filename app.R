@@ -15,7 +15,7 @@ source("helpers.R")
 
 max_war = 16
 max_coin = 30
-max_sci = 8
+max_sci = 6
 
 ui <- page_navbar(
   title = "Seven Wonders: all packs",
@@ -339,14 +339,15 @@ server <- function(input, output) {
                              digits = 0)  
    
   
-  sliderValues <- reactive({get_sci(input$A,
-                                    input$O,
-                                    input$E,
-                                    input$AO,
-                                    input$AE,
-                                    input$OE,
-                                    input$AOE,
-                                    input$plus)
+  sliderValues <- reactive({get_sci(A = input$A,
+                                    O = input$O,
+                                    E = input$E,
+                                    AO = input$AO,
+                                    AE = input$AE,
+                                    OE = input$OE,
+                                    AOE = input$AOE,
+                                    cycle = input$cycle,
+                                    plus = input$plus)
     
   })
   

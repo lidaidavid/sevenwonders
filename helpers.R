@@ -85,18 +85,18 @@ return(out)
 
 # A = 0
 # O = 1
-# E = 1
-# 
+# E = 2
+# # 
 # AO = 0
 # AE = 0
 # OE = 0
 # 
-# AOE = 1
-# 
-# cycle = 0
-# plus = 1
+# AOE = 0
+# # 
+# cycle = T
+# plus = F
 
-get_sci <- function(A=0,O=0,E=0,AO = 0, AE=0, OE = 0, AOE = 0, plus = 0, cycle = 0){
+get_sci <- function(A=0,O=0,E=0,AO = 0, AE=0, OE = 0, AOE = 0, plus = F, cycle = F){
   
   dt_OE <- get_two_combo(OE)
   dt_AO <- get_two_combo(AO)
@@ -113,6 +113,8 @@ get_sci <- function(A=0,O=0,E=0,AO = 0, AE=0, OE = 0, AOE = 0, plus = 0, cycle =
     if(A == 0){dt_minus$A_cycle = 0}
     if(O == 0){dt_minus$O_cycle = 0}
     if(E == 0){dt_minus$E_cycle = 0}
+    dt_minus$is.zero <- rowSums(dt_minus) == 0
+    dt_minus <- subset(dt_minus, is.zero == F) 
   }else{
     dt_minus <- data.frame(A_cycle = c(0),
                            O_cycle = c(0),
